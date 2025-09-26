@@ -9,10 +9,10 @@ class Blockchain (object):
         
         #creating new genesis (first) block
     
-        self.new_block(previous_hash=1, proof=100);
+        self.new_block(previous_hash=1, proof=100); #every time blockchain is called, it creates a genesis
     
     def new_block(self, proof, previous_hash=None): #will create a new Block and add to chain
-        
+        #could add error that enforces minimum one transaction per block
         block = {
             'index': len(self.chain) + 1,
             'timestamp': time(),
@@ -22,9 +22,9 @@ class Blockchain (object):
             
         }
         
-        self.current_transactions = []
+        self.current_transactions = [] #has to wipe all pending transactions
         
-        self.chain.append(block);
+        self.chain.append(block); #adds itself to the blockchain
         
         return block;
     
@@ -40,7 +40,10 @@ class Blockchain (object):
     
     @staticmethod
     def hash(block):
-        pass
+        
+        block_string = json.dumps(block, sort_keys=True).encode() #converts the block info to a JSON string, and then bytes
+        return hashlib.sha256(block_string).hexdigest() #hashes using sha256 and formats it in hexadecimal
+        
     
     @property
     def last_block(self):
